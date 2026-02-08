@@ -1,3 +1,4 @@
+"use client";
 import { MFAGuard } from "@/components/auth/MFAGuard";
 import ActivityPage from "@/views/ActivityPage";
 

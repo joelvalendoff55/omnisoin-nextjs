@@ -1,3 +1,4 @@
+"use client";
 import { MFAGuard } from "@/components/auth/MFAGuard";
 import Patients from "@/views/Patients";
 

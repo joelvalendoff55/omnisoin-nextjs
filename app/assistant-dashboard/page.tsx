@@ -1,3 +1,4 @@
+"use client";
 import { MFAGuard } from "@/components/auth/MFAGuard";
 import AssistantDashboard from "@/views/AssistantDashboard";
 

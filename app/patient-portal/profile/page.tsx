@@ -1,3 +1,4 @@
+"use client";
 import { PatientProfile } from "@/views/patient";
 
 export default function Page() {

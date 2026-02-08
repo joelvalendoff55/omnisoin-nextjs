@@ -1,11 +1,10 @@
 "use client";
-import { MFAGuard } from "@/components/auth/MFAGuard";
-import Index from "@/views/Index";
 
 export default function HomePage() {
   return (
-    <MFAGuard>
-      <Index />
-    </MFAGuard>
+    <div style={{padding: '2rem', textAlign: 'center'}}>
+      <h1>OmniSoin - Test Page</h1>
+      <p>Si vous voyez ceci, les Providers fonctionnent correctement.</p>
+    </div>
   );
 }

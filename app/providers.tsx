@@ -30,7 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ErrorBoundary inline errorMessage="Une erreur inattendue s'est produite. Veuillez rafraichir la page.">
+    <ErrorBoundary errorMessage="Une erreur inattendue s'est produite. Veuillez rafraichir la page.">
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>

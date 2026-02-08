@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from '@/hooks/useAuth';
 import { supabaseWithCustomStorage as supabase } from '@/integrations/supabase/customClient';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ export default function Auth() {
   
   const { signIn, signUp, user } = useAuth();
   const router = useRouter();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
 
   // Entrance animation
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function Auth() {
       if (resetParam === '1') {
         setIsResetMode(true);
         
-        if (devRecovery === '1' && import.meta.env.DEV) {
+        if (devRecovery === '1' && process.env.NODE_ENV === 'development') {
           console.warn('[DEV] Bypassing session check for E2E testing');
           setHasValidResetSession(true);
           setCheckingSession(false);
@@ -169,9 +169,9 @@ export default function Auth() {
   // Redirect authenticated users
   useEffect(() => {
     if (user && !isResetMode && !showStructureSetup) {
-      navigate('/');
+      router.push('/');
     }
-  }, [user, navigate, isResetMode, showStructureSetup]);
+  }, [user, router, isResetMode, showStructureSetup]);
 
   // Real-time validation
   const emailError = useMemo(() => {
@@ -341,12 +341,12 @@ export default function Auth() {
 
   const handleStructureComplete = (structureId: string, role: string) => {
     setShowStructureSetup(false);
-    navigate('/');
+    router.push('/');
   };
 
   const handleStructureSkip = () => {
     setShowStructureSetup(false);
-    navigate('/');
+    router.push('/');
   };
 
   // Loading state

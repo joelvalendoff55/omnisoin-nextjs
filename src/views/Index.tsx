@@ -143,9 +143,9 @@ const Index = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate('/auth');
+      router.push('/auth');
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -178,7 +178,7 @@ const Index = () => {
           <DraggableKPIGrid
             stats={todayStats}
             loading={dashboardLoading}
-            onNavigate={navigate}
+            onNavigate={router.push}
           />
         )}
 
@@ -201,7 +201,7 @@ const Index = () => {
               icon={<Clock className="h-4 w-4 text-warning" />}
               action={{
                 label: 'Voir file',
-                onClick: () => navigate('/file-attente'),
+                onClick: () => router.push('/file-attente'),
               }}
             >
               {queueLoading ? (
@@ -225,7 +225,7 @@ const Index = () => {
                       reason={entry.reason || entry.consultation_reason?.label}
                       waitingMinutes={entry.waitingMinutes}
                       status={entry.status}
-                      onClick={() => navigate('/file-attente')}
+                      onClick={() => router.push('/file-attente')}
                     />
                   ))}
                   {waitingPatients.length > 5 && (

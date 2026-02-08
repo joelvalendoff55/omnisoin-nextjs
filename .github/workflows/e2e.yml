@@ -12,12 +12,15 @@ jobs:
     timeout-minutes: 20
 
     env:
-      PLAYWRIGHT_BASE_URL: http://localhost:8080
+      PLAYWRIGHT_BASE_URL: http://localhost:3000
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
       # Supabase env vars (required for app to start)
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      # Legacy aliases for seed script compatibility
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       # Seed script env vars
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       E2E_STRUCTURE_ID: '11111111-1111-1111-1111-111111111111'
@@ -39,12 +42,13 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Seed E2E data
+        if: env.SUPABASE_SERVICE_ROLE_KEY != ''
         run: npx tsx tests/e2e/seed/seed.ts
 
       - name: Start app
         run: |
-          npm run dev -- --host 0.0.0.0 --port 8080 &
-          npx wait-on http://localhost:8080/auth --timeout 60000
+          npm run dev -- -p 3000 &
+          npx wait-on http://localhost:3000/auth --timeout 60000
 
       - name: Run E2E tests
         run: npx playwright test --reporter=list,html

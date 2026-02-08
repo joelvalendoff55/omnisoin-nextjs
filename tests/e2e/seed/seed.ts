@@ -8,13 +8,13 @@
  *   npm run e2e:seed
  * 
  * Environment variables:
- *   - VITE_SUPABASE_URL or SUPABASE_URL: Supabase project URL
+  *   - NEXT_PUBLIC_SUPABASE_URL, VITE_SUPABASE_URL, or SUPABASE_URL: Supabase project URL
  *   - SUPABASE_SERVICE_ROLE_KEY: Service role key (NOT anon key)
  *   - TEST_USER_EMAIL: Email of the test user (must exist in auth.users)
  *   - E2E_STRUCTURE_ID: Optional, defaults to fixed UUID
  */
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL;
 const STRUCTURE_ID = process.env.E2E_STRUCTURE_ID || '11111111-1111-1111-1111-111111111111';
@@ -55,7 +55,7 @@ const ACTIVITY_IDS = [
 
 // Validate required env vars
 if (!SUPABASE_URL) {
-  console.error('❌ Missing VITE_SUPABASE_URL or SUPABASE_URL');
+      console.error('\u274c Missing NEXT_PUBLIC_SUPABASE_URL, VITE_SUPABASE_URL, or SUPABASE_URL');
   process.exit(1);
 }
 

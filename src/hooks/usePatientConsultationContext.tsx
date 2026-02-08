@@ -32,7 +32,8 @@ const PatientConsultationContext = createContext<PatientConsultationContextValue
 export function PatientConsultationProvider({ children }: { children: ReactNode }) {
   const [context, setContext] = useState<ConsultationContext>(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+if (typeof window === "undefined") return defaultContext;
+const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         return JSON.parse(stored);
       }
@@ -45,11 +46,11 @@ export function PatientConsultationProvider({ children }: { children: ReactNode 
   // Persist to localStorage whenever context changes
   useEffect(() => {
     try {
-      if (context.patient) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(context));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+      if (typeof window !== "undefined" && context.patient) {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(context));
+      } else if (typeof window !== "undefined") {
+localStorage.removeItem(STORAGE_KEY);
+}
     } catch (e) {
       console.error('Error saving patient context to localStorage:', e);
     }
@@ -77,7 +78,7 @@ export function PatientConsultationProvider({ children }: { children: ReactNode 
 
   const clearContext = useCallback(() => {
     setContext(defaultContext);
-    localStorage.removeItem(STORAGE_KEY);
+if (typeof window !== "undefined") localStorage.removeItem(STORAGE_KEY);
   }, []);
 
   const isActive = context.patient !== null;

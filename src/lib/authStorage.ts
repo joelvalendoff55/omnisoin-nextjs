@@ -6,12 +6,14 @@
 const REMEMBER_ME_KEY = 'omnisoin_remember_me';
 
 export function getRememberMe(): boolean {
+  if (typeof window === "undefined") return true;
   const value = localStorage.getItem(REMEMBER_ME_KEY);
   // Default to true if not set
   return value !== '0';
 }
 
 export function setRememberMe(value: boolean): void {
+  if (typeof window === "undefined") return;
   localStorage.setItem(REMEMBER_ME_KEY, value ? '1' : '0');
 }
 
@@ -21,6 +23,7 @@ export function setRememberMe(value: boolean): void {
  */
 export const customAuthStorage = {
   getItem: (key: string): string | null => {
+    if (typeof window === "undefined") return null;
     // Try sessionStorage first (for non-remember sessions)
     const sessionValue = sessionStorage.getItem(key);
     if (sessionValue !== null) {
@@ -31,6 +34,7 @@ export const customAuthStorage = {
   },
   
   setItem: (key: string, value: string): void => {
+    if (typeof window === "undefined") return;
     if (getRememberMe()) {
       // Remember me: use localStorage (persistent)
       localStorage.setItem(key, value);
@@ -45,6 +49,7 @@ export const customAuthStorage = {
   },
   
   removeItem: (key: string): void => {
+    if (typeof window === "undefined") return;
     localStorage.removeItem(key);
     sessionStorage.removeItem(key);
   },
@@ -55,6 +60,7 @@ export const customAuthStorage = {
  * Called after login when remember_me is false
  */
 export function transferSessionToSessionStorage(): void {
+  if (typeof window === "undefined") return;
   const supabaseKeys = Object.keys(localStorage).filter(
     key => key.startsWith('sb-') || key.includes('supabase')
   );
